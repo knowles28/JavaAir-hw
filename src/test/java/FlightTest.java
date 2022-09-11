@@ -150,6 +150,12 @@ public class FlightTest {
         System.out.println(flight2.printPassengerManifesto());
     }
 
+    @Test
+    public void BookedPassengerHasFlightNumber(){
+        flight.bookPassengerOnFlight(passenger1);
+        assertEquals("EJ142", passenger1.getFlightNumber());
+    }
+
 //    BAGGAGE --------------
 
     @Test

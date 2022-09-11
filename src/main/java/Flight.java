@@ -86,6 +86,7 @@ public class Flight extends Plane {
             ) {
             this.passengerManifesto.add(passenger);
             this.totalBags += passenger.getBags();
+            passenger.setFlightNumber(this.flightNumber);
         }
     }
 
@@ -126,7 +127,7 @@ public class Flight extends Plane {
     public int getRemainingAvailableBaggageWeightForFlight(){
         return getAircraftMaxBaggageWeightFromEnum() - getTotalWeightOfAllPassengerBaggage();
     }
-    
+
 
 }
 
