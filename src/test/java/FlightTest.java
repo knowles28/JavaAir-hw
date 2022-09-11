@@ -14,8 +14,9 @@ public class FlightTest {
 
     CrewMember cabinCrew;
 
-    Passenger passenger;
+    Passenger passenger1;
     Passenger passenger2;
+    Passenger passenger3;
 
 
 
@@ -30,8 +31,9 @@ public class FlightTest {
 
         cabinCrew = new CrewMember("Jon", CrewRank.ATTENDANT);
 
-        passenger = new Passenger("Samwise Jones", 2);
-        passenger2 = new Passenger("Frodo Smith", 1);
+        passenger1 = new Passenger("Samwise", 2);
+        passenger2 = new Passenger("Frodo", 1);
+        passenger3 = new Passenger("Alice", 4);
     }
 
 
@@ -120,41 +122,76 @@ public class FlightTest {
 
     @Test
     public void canBookPassengerOnFlight(){
-        flight.bookPassengerOnFlight(passenger);
+        flight.bookPassengerOnFlight(passenger1);
         assertEquals(1, flight.getPassengerManifestoLength());
     }
 
     @Test
     public void canCheckRemainingFlightCapacity(){
-        flight.bookPassengerOnFlight(passenger);
+        flight.bookPassengerOnFlight(passenger1);
         assertEquals(7, flight.getRemainingFlightCapacity());
     }
 
     @Test
     public void cannotOverbookFlight(){
-        flight2.bookPassengerOnFlight(passenger);
-        flight2.bookPassengerOnFlight(passenger);
-        flight2.bookPassengerOnFlight(passenger);
+        flight2.bookPassengerOnFlight(passenger1);
+        flight2.bookPassengerOnFlight(passenger1);
+        flight2.bookPassengerOnFlight(passenger1);
         assertEquals(2, flight2.getPassengerManifestoLength());
         assertEquals(0, flight2.getRemainingFlightCapacity());
     }
 
     @Test
     public void canRemovePassengerFromFlight(){
-        flight2.bookPassengerOnFlight(passenger);
+        flight2.bookPassengerOnFlight(passenger1);
         flight2.bookPassengerOnFlight(passenger2);
         flight2.removePassengerFromFlight(passenger2);
         assertEquals(1, flight2.getPassengerManifestoLength());
         System.out.println(flight2.printPassengerManifesto());
     }
 
-//    Baggage
+//    BAGGAGE --------------
 
     @Test
     public void canAddPassengerBagsToFlight(){
-        flight.bookPassengerOnFlight(passenger);
+        flight.bookPassengerOnFlight(passenger1);
         flight.bookPassengerOnFlight(passenger2);
         assertEquals(3, flight.getTotalBags());
+    }
+
+    @Test
+    public void canGetBaggageWeightAllowancePerPassenger(){
+        assertEquals(50, flight.getBaggageWeightAllowancePerPassenger());
+    }
+
+    @Test
+    public void canGetBaggageWeightPerPassenger(){
+       assertEquals(80,  flight.getBaggageWeightPerPassenger(passenger3));
+    }
+
+    @Test
+    public void cannotBookPassengerOnFlightWhoseBaggageExceedsLimit(){
+        flight.bookPassengerOnFlight(passenger1);
+        flight.bookPassengerOnFlight(passenger3);
+        assertEquals(1, flight.getPassengerManifestoLength());
+    }
+
+    @Test
+    public void canCheckTotalWeightOfAllPassengerBaggage(){
+        flight.bookPassengerOnFlight(passenger1);
+        flight.bookPassengerOnFlight(passenger2);
+        flight.bookPassengerOnFlight(passenger2);
+        assertEquals(80, flight.getTotalWeightOfAllPassengerBaggage());
+
+    }
+
+    @Test
+    public void canGetRemainingAvailableBaggageWeight(){
+        flight.bookPassengerOnFlight(passenger1);
+        flight.bookPassengerOnFlight(passenger2);
+        flight.bookPassengerOnFlight(passenger2);
+        assertEquals(320, flight.getRemainingAvailableBaggageWeightForFlight());
+
     }
 
 

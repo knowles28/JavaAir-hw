@@ -14,4 +14,8 @@ public class Plane {
     public int getAircraftCapacityFromEnum() {
         return aircraftType.getAircraftCapacity();
     }
+
+    public int getAircraftMaxBaggageWeightFromEnum(){
+        return aircraftType.getMaxWeightInKilos() / 2;
+    }
 }

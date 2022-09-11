@@ -21,4 +21,9 @@ public class PlaneTest {
     public void hasCapacity(){
         assertEquals(250, plane.getAircraftCapacityFromEnum());
     }
+
+    @Test
+    public void hasMaxBaggageWeight(){
+        assertEquals(2000, plane.getAircraftMaxBaggageWeightFromEnum());
+    }
 }

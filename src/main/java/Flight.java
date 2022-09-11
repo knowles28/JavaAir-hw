@@ -27,6 +27,8 @@ public class Flight extends Plane {
 
     }
 
+    //    FLIGHT DETAILS --------------
+
 
     public String getFlightNumber() {
         return flightNumber;
@@ -48,6 +50,8 @@ public class Flight extends Plane {
         return totalBags;
     }
 
+    //   PILOTS & CREW --------------
+
 
     public int getCockpitCapacity() {
         return cockpit.size();
@@ -59,7 +63,6 @@ public class Flight extends Plane {
         }
     }
 
-
     public int getCabinCrewTotal() {
         return this.cabinCrewList.size();
     }
@@ -70,13 +73,17 @@ public class Flight extends Plane {
         }
     }
 
+//    PASSENGERS --------------
+
 
     public int getPassengerManifestoLength() {
         return this.passengerManifesto.size();
     }
 
     public void bookPassengerOnFlight(Passenger passenger) {
-        if (getAircraftCapacityFromEnum() > getPassengerManifestoLength()) {
+        if (    getAircraftCapacityFromEnum() > getPassengerManifestoLength() &&
+                getBaggageWeightPerPassenger(passenger) < getBaggageWeightAllowancePerPassenger()
+            ) {
             this.passengerManifesto.add(passenger);
             this.totalBags += passenger.getBags();
         }
@@ -93,30 +100,33 @@ public class Flight extends Plane {
 //            for(Passenger name : passengerManifesto){
 //            System.out.println(name);
 
+
     public int getRemainingFlightCapacity() {
         int capacity = getAircraftCapacityFromEnum() - getPassengerManifestoLength();
         return capacity;
     }
 
-
-//    Each passenger bag weighs the same
-//Planes reserve half of their total weight for passenger bags
-//The weight of bag per person is the weight reserved for passenger bags divided by the capacity
-
-//    Create a FlightManager which can:
-//
-// calculate how much baggage weight should be reserved for each passenger for a flight
-// calculate how much baggage weight is booked by passengers of a flight
-// calculate how much overall weight reserved for baggage remains for a flight
+//    BAGGAGE --------------
 
 
-// - ADD MAX WEIGHT FOR EACH AIRCRAFT TYPE
-// - FUNCTION baggage weight for each passenger (in plane?): TAKE MAX WEIGHT, DIVIDE BY 2, THEN DIVIDE BY AIRCRAFT CAPACITY
-// - FUNCTION total booked weight: MULTIPLY BAG TOTAL BY 10
-// - FUNCTION total weight of baggage: TAKE MAX WEIGHT, DIVIDE BY 2, MINUS TOTAL BOOKED WEIGHT
+    public int getBaggageWeightAllowancePerPassenger(){
+        return getAircraftMaxBaggageWeightFromEnum() / getAircraftCapacityFromEnum();
+    }
 
+    public int getBaggageWeightPerPassenger(Passenger passenger){
+        int perBagMax = 20;
+        return passenger.getBags() * perBagMax;
+    }
 
+    public int getTotalWeightOfAllPassengerBaggage(){
+        int perBagMax = 20;
+        return this.totalBags * perBagMax;
+    }
 
+    public int getRemainingAvailableBaggageWeightForFlight(){
+        return getAircraftMaxBaggageWeightFromEnum() - getTotalWeightOfAllPassengerBaggage();
+    }
+    
 
 }
 
